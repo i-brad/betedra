@@ -1,0 +1,16 @@
+{
+  "name": "sailfish-prediction",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.19",
+    "solc": "^0.8.24"
+  },
+  "dependencies": {
+    "@134dd3v/uniswap-v3-core-0.8-support": "^1.0.3",
+    "@openzeppelin/contracts": "^5.2.0",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "@pythnetwork/pyth-sdk-solidity": "^4.2.0",
+    "@uniswap/v3-core": "^1.0.1",
+    "dotenv": "^16.4.7"
+  }
+}

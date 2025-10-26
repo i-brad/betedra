@@ -1,0 +1,7 @@
+export const TICKET_LIMIT_PER_REQUEST = 2500;
+export const CONTRACT_ADDRESS = process.env
+  .NEXT_PUBLIC_LOTTERY_ADDRESS as `0x${string}`;
+
+export const NUM_ROUNDS_TO_CHECK_FOR_REWARDS = 3;
+export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 3;
+export const MAX_LOTTERIES_REQUEST_SIZE = 100;

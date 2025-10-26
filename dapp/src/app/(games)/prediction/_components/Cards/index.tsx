@@ -1,0 +1,101 @@
+import { getMultiplierV2 } from "@/helpers";
+import useGetBetByEpoch from "@/hooks/useGetBetByEpoch";
+import { NodeRound } from "@/state/types";
+import { BIG_ZERO } from "@/utils/bigNumber";
+import React from "react";
+import { useAccount } from "wagmi";
+import ExpiredRoundCard from "./ExpiredRoundCard";
+import LiveRoundCard from "./LiveRoundCard";
+import OpenRoundCard from "./OpenRoundCard";
+import SoonRoundCard from "./SoonRoundCard";
+
+interface RoundCardProps {
+  round: NodeRound;
+  isActive?: boolean;
+  currentEpoch: number;
+  refreshLedger?: any;
+}
+
+export const PredictionCard = ({
+  round,
+  currentEpoch,
+  refreshLedger,
+}: RoundCardProps) => {
+  const { epoch, lockPrice, closePrice, totalAmount, bullAmount, bearAmount } =
+    round;
+  const { address: account } = useAccount();
+  const ledger = useGetBetByEpoch(account ?? "0x", epoch);
+
+  const hasEntered = ledger ? ledger.amount > 0n : false;
+
+  const hasEnteredUp = hasEntered && ledger?.position === 0;
+  const hasEnteredDown = hasEntered && ledger?.position === 1;
+  const hasClaimedUp = hasEntered && ledger?.claimed && ledger?.position === 0;
+  const hasClaimedDown = hasEntered && ledger?.claimed && ledger.position === 1;
+
+  // Fake future rounds
+  if (epoch > currentEpoch) {
+    return <SoonRoundCard round={round} />;
+  }
+
+  const bullMultiplier =
+    Number(totalAmount) && totalAmount && Number(bullAmount) && bullAmount
+      ? getMultiplierV2(totalAmount, bullAmount)
+      : BIG_ZERO;
+  const bearMultiplier =
+    Number(totalAmount) && totalAmount && Number(bearAmount) && bearAmount
+      ? getMultiplierV2(totalAmount, bearAmount)
+      : BIG_ZERO;
+
+  const formattedBullMultiplier = bullMultiplier.toFixed(
+    bullMultiplier.isZero() ? 0 : 2
+  );
+  const formattedBearMultiplier = bearMultiplier.toFixed(
+    bearMultiplier.isZero() ? 0 : 2
+  );
+
+  // Next (open) round
+  if (epoch === currentEpoch && lockPrice === null) {
+    // Predictions
+    return (
+      <OpenRoundCard
+        round={round}
+        hasEnteredDown={hasEnteredDown}
+        hasEnteredUp={hasEnteredUp}
+        betAmount={ledger?.amount}
+        bullMultiplier={formattedBullMultiplier}
+        bearMultiplier={formattedBearMultiplier}
+        refreshLedger={refreshLedger}
+      />
+    );
+  }
+
+  // Live round
+  if (closePrice === null && epoch === currentEpoch - 1) {
+    return (
+      <LiveRoundCard
+        betAmount={ledger?.amount}
+        hasEnteredDown={hasEnteredDown}
+        hasEnteredUp={hasEnteredUp}
+        round={round}
+        bullMultiplier={formattedBullMultiplier}
+        bearMultiplier={formattedBearMultiplier}
+      />
+    );
+  }
+
+  // Past rounds
+  return (
+    <ExpiredRoundCard
+      // isActive={isActive}
+      round={round}
+      hasEnteredDown={hasEnteredDown}
+      hasEnteredUp={hasEnteredUp}
+      hasClaimedDown={hasClaimedDown ?? false}
+      hasClaimedUp={hasClaimedUp ?? false}
+      betAmount={ledger?.amount}
+      bullMultiplier={formattedBullMultiplier}
+      bearMultiplier={formattedBearMultiplier}
+    />
+  );
+};
