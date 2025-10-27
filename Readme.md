@@ -1,19 +1,19 @@
 # Betedra
 
-*Fast, Fair, and Fun Betting Games on Hedera*
+_Fast, Fair, and Fun Betting Games on Hedera_
 
 Betedra brings transparency, trust, and entertainment to Web3 gaming by enabling millions of African players to experience instant, provably fair prediction and lottery games built on the Hedera network.
 
 **Live dapp:** [https://betedra.fun](https://betedra.fun)  
 **Hackathon Track:** Gaming & NFTs → Play-to-Earn Gaming  
-**Tech:** Hedera, Pyth Oracle, IPrngSystemContract (PRNG), Next.js, Hardhat, Mirror Node  
+**Tech:** Hedera, Pyth Oracle, IPrngSystemContract (PRNG), Next.js, Hardhat, Mirror Node
 
 ## What is Betedra?
 
 Betedra is a fast, arcade-style dapp on Hedera that lets anyone play two simple games:
 
-* **Prediction:** every **5 minutes**, pick whether the **HBAR/USDC** price will go **UP** or **DOWN**. Settlement uses **Pyth** prices at lock/close.
-* **Lotto:** buy entries for a provably fair on-chain draw. Randomness uses Hedera’s **IPrngSystemContract**.
+- **Prediction:** every **5 minutes**, pick whether the **HBAR/USDC** price will go **UP** or **DOWN**. Settlement uses **Pyth** prices at lock/close.
+- **Lotto:** buy entries for a provably fair on-chain draw. Randomness uses Hedera’s **IPrngSystemContract**.
 
 Our vision is to provide transparent, low-fee, instant on-chain play that feels fun and fair—tailored for mobile-first players and emerging markets where payout trust and micro-stakes matter.
 
@@ -21,11 +21,11 @@ Our vision is to provide transparent, low-fee, instant on-chain play that feels 
 
 ```
 betedra-monorepo/
-├─ dapp-main/                   # Next.js front-end (Vercel)
-├─ img/                         # Assets & diagrams (PNG/SVG)
-├─ lottery-contract-main/       # Lotto contracts (Hardhat + Ignition)
-├─ prediction-contract-main/    # Prediction contracts (Hardhat + Ignition)
-├─ prediction-cron-main/        # Cron worker (executeRound + Pyth updates)
+├─ dapp/                   # Next.js front-end (Vercel)
+├─ images/                         # Assets & diagrams (PNG/SVG)
+├─ lottery-contract/       # Lotto contracts (Hardhat + Ignition)
+├─ prediction-contract/    # Prediction contracts (Hardhat + Ignition)
+├─ prediction-cron/        # Cron worker (executeRound + Pyth updates)
 └─ README.md
 ```
 
@@ -38,8 +38,6 @@ betedra-monorepo/
 | **Prediction Contract**          | `0.0.6879645` | [https://hashscan.io/testnet/contract/0.0.6879645](https://hashscan.io/testnet/contract/0.0.6879645) |
 | **Lotto Contract**               | `0.0.6787511` | [https://hashscan.io/testnet/contract/0.0.6787511](https://hashscan.io/testnet/contract/0.0.6787511) |
 
-
-
 ## Cron (prediction-cron-main)
 
 Performs two key jobs:
@@ -47,8 +45,8 @@ Performs two key jobs:
 1. **Execute rounds** — calls `executeRound()` on **BetedraPrediction** exactly **every 5 minutes** (288 rounds/day).
 2. **Keep oracle fresh** — every **2 minutes** it fetches `updateData` and runs:
 
-   * `pythContract.getUpdateFee(updateData)`
-   * `pythContract.updatePriceFeeds{ value: fee }(updateData)`
+   - `pythContract.getUpdateFee(updateData)`
+   - `pythContract.updatePriceFeeds{ value: fee }(updateData)`
 
 This prevents stale Pyth prices and keeps settlement fair.
 
@@ -64,44 +62,41 @@ PYTH_REFRESH_MIN=2
 PRIVATE_KEY=0xabcdef...        # operator for txs
 ```
 
-
 ## Prediction (HBAR/USDC)
 
-* **Cadence:** every **5 minutes**; pipelines **Next → Live → Later**.
-* **Lock:** record `lockPrice` from **Pyth**; freshness & confidence checks enforced.
-* **Close & Settle:** record `closePrice` from **Pyth**; `close ≥ lock` → **UP** wins, else **DOWN**; split pool; emit events.
-* **Guards:** small **buffers** around lock/close; **cancel** if no valid oracle update.
-  
+- **Cadence:** every **5 minutes**; pipelines **Next → Live → Later**.
+- **Lock:** record `lockPrice` from **Pyth**; freshness & confidence checks enforced.
+- **Close & Settle:** record `closePrice` from **Pyth**; `close ≥ lock` → **UP** wins, else **DOWN**; split pool; emit events.
+- **Guards:** small **buffers** around lock/close; **cancel** if no valid oracle update.
 
 ### Architecture Illustration
 
 #### Normal Operation
 
-![normal](/prediction-contract-main/images/normal-round.png)
+![normal](/prediction-contract/images/normal-round.png)
 
 #### Missing Round Operation
 
-![missing](/prediction-contract-main/images/missing-round.png)
-
+![missing](/prediction-contract/images/missing-round.png)
 
 ## Lotto
 
-* **Tickets:** users buy entries during an open window (e.g., 5 HBAR each).
-* **Draw:** contract calls **IPrngSystemContract** for a seed; winners derived on-chain; emits `LottoWin`.
-* **Payouts:** winners claim from the contract; unmatched pools follow configured rollover rules.
+- **Tickets:** users buy entries during an open window (e.g., 5 HBAR each).
+- **Draw:** contract calls **IPrngSystemContract** for a seed; winners derived on-chain; emits `LottoWin`.
+- **Payouts:** winners claim from the contract; unmatched pools follow configured rollover rules.
 
 ## Leaderboard
 
-* Mirror-Node indexer aggregates `RoundSettled`, `UserPayout`, `LottoWin` into **Top PnL**, **Win Rate**, **Longest Streak**, **Most Active**.
+- Mirror-Node indexer aggregates `RoundSettled`, `UserPayout`, `LottoWin` into **Top PnL**, **Win Rate**, **Longest Streak**, **Most Active**.
 
---- 
+---
 
 ## Why Hedera
 
-* **Instant, low-cost gameplay:** sub-cent fees + fast finality make 5-minute rounds viable and fun.
-* **Native trust primitives:** **Pyth** provides settlement prices; **IPrngSystemContract** supplies unbiased randomness—fully on-chain.
-* **Transparent & composable:** events + oracle data make outcomes reproducible and reusable for other Hedera games.
-* **Fit for mobile-first, micro-stakes users:** predictable fees and instant payouts support casual play at scale.
+- **Instant, low-cost gameplay:** sub-cent fees + fast finality make 5-minute rounds viable and fun.
+- **Native trust primitives:** **Pyth** provides settlement prices; **IPrngSystemContract** supplies unbiased randomness—fully on-chain.
+- **Transparent & composable:** events + oracle data make outcomes reproducible and reusable for other Hedera games.
+- **Fit for mobile-first, micro-stakes users:** predictable fees and instant payouts support casual play at scale.
 
 ## Deployment
 
@@ -130,8 +125,8 @@ cd lottery-contract-main
 npm i
 
 # Deploy
-npx hardhat run scripts/deploy-prng.js --network hedera-testnet 
-npx hardhat run scripts/deploy-whbar.js --network hedera-testnet 
+npx hardhat run scripts/deploy-prng.js --network hedera-testnet
+npx hardhat run scripts/deploy-whbar.js --network hedera-testnet
 
 # Edit deployed PRNG contract and whbar scripts/deploy-lotto.js
 npx hardhat run scripts/deploy-lotto.js --network hedera-testnet
@@ -179,8 +174,8 @@ executeRound()
 
 ## Front-end (dapp-main)
 
-* Next.js (Vercel), responsive UI; wallets: HashPack, MetaMask (Hedera EVM).
-* Shows Prediction rounds, claims, Lotto entry, **Pyth**/**PRNG** trust badges.
+- Next.js (Vercel), responsive UI; wallets: HashPack, MetaMask (Hedera EVM).
+- Shows Prediction rounds, claims, Lotto entry, **Pyth**/**PRNG** trust badges.
 
 **`.env.local` (example)**
 
@@ -206,17 +201,17 @@ yarn --cwd dapp-main dev
 
 ## Market & Value
 
-* **Audience:** mobile-first gamers, DeFi-curious users; emphasis on instant payouts and fairness.
-* **Business model:** protocol fee (e.g., ~3%) on Prediction & Lotto rounds, routed to treasury/community rewards.
-* **Impact:** frequent rounds/draws and leaderboards create sticky play-to-earn loops and daily active wallets.
+- **Audience:** mobile-first gamers, DeFi-curious users; emphasis on instant payouts and fairness.
+- **Business model:** protocol fee (e.g., ~3%) on Prediction & Lotto rounds, routed to treasury/community rewards.
+- **Impact:** frequent rounds/draws and leaderboards create sticky play-to-earn loops and daily active wallets.
 
 ## Traction & Roadmap
 
-* Created docs  https://betedra.gitbook.io/docs/
-* Hackathon MVP (Live on Testnet):
-* Prediction Game Live: 5-minute HBAR/USDC rounds, instant on-chain payouts.
-* Lottery Game Live: 6-digit ticket draws using Hedera’s PRNG for provable randomness.
-* Wallet Integration: MetaMask
-* Functional Web App: Real-time timers and responsive UI
-* Live Leaderboard & History Tracking: Users can track rounds, view stats, and claim rewards.
-* 23 beta testers
+- Created docs https://betedra.gitbook.io/docs/
+- Hackathon MVP (Live on Testnet):
+- Prediction Game Live: 5-minute HBAR/USDC rounds, instant on-chain payouts.
+- Lottery Game Live: 6-digit ticket draws using Hedera’s PRNG for provable randomness.
+- Wallet Integration: MetaMask
+- Functional Web App: Real-time timers and responsive UI
+- Live Leaderboard & History Tracking: Users can track rounds, view stats, and claim rewards.
+- 23 beta testers
