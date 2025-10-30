@@ -35,7 +35,7 @@ betedra-monorepo/
 
 ## Hedera Certification Link
 
-https://drive.google.com/file/d/1i13FB7eikBzQLpnLIse9igqIYVark5Zp/view?usp=drivesdk
+<https://drive.google.com/file/d/1i13FB7eikBzQLpnLIse9igqIYVark5Zp/view?usp=drivesdk>
 
 ## Contracts — Testnet (verified)
 
@@ -215,7 +215,7 @@ yarn --cwd dapp-main dev
 
 ## Traction & Roadmap
 
-- Created docs https://betedra.gitbook.io/docs/
+- Created docs <https://betedra.gitbook.io/docs/>
 - Hackathon MVP (Live on Testnet):
 - Prediction Game Live: 5-minute HBAR/USDC rounds, instant on-chain payouts.
 - Lottery Game Live: 6-digit ticket draws using Hedera’s PRNG for provable randomness.
