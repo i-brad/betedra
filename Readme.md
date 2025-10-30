@@ -29,6 +29,10 @@ betedra-monorepo/
 └─ README.md
 ```
 
+## Track
+
+Gaming and NFTs
+
 ## Pitch Deck
 
 <https://drive.google.com/file/d/1ZDOBDLiOuTLQ53PIs6QCbqS5VbAubHM_/view?usp=sharing>
