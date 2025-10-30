@@ -29,6 +29,14 @@ betedra-monorepo/
 └─ README.md
 ```
 
+## Pitch Deck
+
+<https://drive.google.com/file/d/1ZDOBDLiOuTLQ53PIs6QCbqS5VbAubHM_/view?usp=sharing>
+
+## Hedera Certification Link
+
+https://drive.google.com/file/d/1i13FB7eikBzQLpnLIse9igqIYVark5Zp/view?usp=drivesdk
+
 ## Contracts — Testnet (verified)
 
 | Component                        | Hedera ID     | HashScan                                                                                             |
@@ -196,8 +204,8 @@ yarn --cwd dapp-main dev
 
 ## Architecture
 
-![Betedra E2E](/img/betedra_end_to_end_flows.svg)
-![Betedra Architecture](/img/betedra_arch_poster.svg)
+![Betedra E2E](/images/betedra_end_to_end_flows.svg)
+![Betedra Architecture](/images/betedra_arch_poster.svg)
 
 ## Market & Value
 
