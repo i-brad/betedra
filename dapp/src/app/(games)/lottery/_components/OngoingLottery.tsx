@@ -93,10 +93,10 @@ const OngoingLottery = () => {
   const { isTransitioning } = useLotteryTransitionStore();
   const wHbarPrice = useHBarPrice();
   const prizeTotal = Number(currentRound?.amountCollectedInWHbar) * wHbarPrice;
-  const ticketBuyIsDisabled = useMemo(
-    () => currentRound?.status !== LotteryStatus.OPEN || isTransitioning,
-    [currentRound, isTransitioning]
-  );
+  const ticketBuyIsDisabled = useMemo(() => {
+    if (!currentRound) return true;
+    return currentRound?.status !== LotteryStatus.OPEN || isTransitioning;
+  }, [currentRound, isTransitioning]);
 
   useEffect(() => {
     if (isTransitioning) {
@@ -143,7 +143,7 @@ const OngoingLottery = () => {
             start={0}
             preserveValue
             delay={0}
-            end={prizeTotal}
+            end={prizeTotal || 0}
             prefix="$"
             decimals={4}
             duration={1}
@@ -157,11 +157,12 @@ const OngoingLottery = () => {
           <span className="block text-base font-semibold">in prizes</span>
 
           <BuyTickets
+            btnClassName="mt-8"
             trigger={
               <PrimaryButton
                 text="Buy tickets"
                 className="max-w-[10.4375rem] mx-auto mt-8"
-                disabled={!currentRound || ticketBuyIsDisabled}
+                disabled={ticketBuyIsDisabled}
                 disabledText="On sale soon!"
               />
             }

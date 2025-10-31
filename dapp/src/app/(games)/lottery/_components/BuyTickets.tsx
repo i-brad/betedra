@@ -18,7 +18,7 @@ import { CONTRACT_ADDRESS } from "@/state/lottery/constants";
 import { LotteryStatus } from "@/state/lottery/types";
 import useLotteryTransitionStore from "@/store/useLotteryTransitionStore";
 import { TicketProps, useTicketsStore } from "@/store/useTicketStore";
-import { currencyFormatter } from "@/utils";
+import { cn, currencyFormatter } from "@/utils";
 import { getFullDisplayBalance } from "@/utils/formatBalance";
 import BigNumber from "bignumber.js";
 import { parseUnits, ZeroAddress } from "ethers";
@@ -95,6 +95,7 @@ const RandomizeTickets = ({
 
 interface Props {
   trigger: ReactNode;
+  btnClassName?: string;
 }
 
 enum BuyingStage {
@@ -102,7 +103,7 @@ enum BuyingStage {
   EDIT = "Edit",
 }
 
-const BuyTickets = ({ trigger }: Props) => {
+const BuyTickets = ({ trigger, btnClassName }: Props) => {
   const [isOpen, setOpen] = useState(false);
   const { isPending, writeContractAsync } = useWriteContract();
   const { isConnected, address: account } = useAccount();
@@ -307,7 +308,11 @@ const BuyTickets = ({ trigger }: Props) => {
     <Dialog open={isOpen} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild disabled={!currentLotteryId}>
         {!currentLotteryId ? (
-          <PrimaryButton disabled text="On sale soon!" className="w-fit" />
+          <PrimaryButton
+            disabled
+            text="On sale soon!"
+            className={cn("w-fit", btnClassName)}
+          />
         ) : (
           trigger
         )}
