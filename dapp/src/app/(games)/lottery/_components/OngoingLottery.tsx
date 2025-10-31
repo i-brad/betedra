@@ -11,6 +11,7 @@ import { currencyFormatter, formatDate } from "@/utils";
 import getTimePeriods from "@/utils/getTimePeriods";
 import Image from "next/image";
 import React, { useEffect } from "react";
+import CountUp from "react-countup";
 import BuyTickets from "./BuyTickets";
 import RewardBrackets from "./RewardBrackets";
 import ViewUserTickets from "./ViewUserTickets";
