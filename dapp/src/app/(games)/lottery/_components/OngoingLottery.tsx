@@ -135,20 +135,28 @@ const OngoingLottery = () => {
           <span className="block text-base font-semibold mb-[0.3125rem]">
             The Betedra Lottery {currentRound ? "of" : null}
           </span>
-          {currentRound ? (
-            <>
+       
               <h2 className="font-bold text-2xl md:text-3xl lg:text-5xl mb-[0.3125rem]">
-                {currencyFormatter(prizeTotal)}
+               <CountUp
+                               start={0}
+                               preserveValue
+                               delay={0}
+                               end={currencyFormatter(prizeTotal)}
+                               prefix="$"
+                               decimals={4}
+                               duration={1}
+                             >
               </h2>
               <span className="block text-base font-semibold">in prizes</span>
-            </>
-          ) : null}
+        
+
+          
           <BuyTickets
             trigger={
               <PrimaryButton
                 text="Buy tickets"
                 className="max-w-[10.4375rem] mx-auto mt-8"
-                disabled={ticketBuyIsDisabled || !currentRound}
+                disabled={!currentRound || ticketBuyIsDisabled}
                 disabledText="On sale soon!"
               />
             }
