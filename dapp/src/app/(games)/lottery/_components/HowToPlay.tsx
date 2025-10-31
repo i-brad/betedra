@@ -3,6 +3,7 @@ import PrimaryButton from "@/components/shared/Buttons";
 import Image from "next/image";
 import React from "react";
 import BuyTickets from "./BuyTickets";
+import useLotteryTransitionStore from "@/store/useLotteryTransitionStore";
 
 const steps = [
   {
@@ -23,6 +24,7 @@ const steps = [
 ];
 
 const HowToPlay = () => {
+  const { isTransitioning } = useLotteryTransitionStore();
   return (
     <section className="bg-purple-600 py-10 lg:py-[4.6875rem] px-8 lg:px-[4.625rem]">
       <div className="text-center text-white mb-[3.5rem]">
@@ -53,7 +55,12 @@ const HowToPlay = () => {
           </div>
           <BuyTickets
             trigger={
-              <PrimaryButton text="Join round" className="max-w-[9.3125rem]" />
+              <PrimaryButton
+                text="Join round"
+                disabled={isTransitioning}
+                disabledText="On sale soon!"
+                className="max-w-[9.3125rem]"
+              />
             }
           />
         </div>
