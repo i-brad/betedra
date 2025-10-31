@@ -142,7 +142,7 @@ const OngoingLottery = () => {
                                start={0}
                                preserveValue
                                delay={0}
-                               end={currencyFormatter(prizeTotal)}
+                               end={prizeTotal}
                                prefix="$"
                                decimals={4}
                                duration={1}
